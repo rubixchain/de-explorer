@@ -1,0 +1,118 @@
+/* General page styles */
+body {
+  margin: 0;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #f5f6fa;
+  color: #333;
+}
+
+.app {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.header {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.header h1 {
+  font-size: 2.5rem;
+  color: #2f3640;
+}
+
+/* Home RBT Tokens button */
+.home {
+  display: flex;
+  justify-content: center;
+  margin-top: 50px;
+}
+
+.rbt-button {
+  background-color: #40739e;
+  color: white;
+  border: none;
+  padding: 15px 30px;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 1.2rem;
+  font-weight: bold;
+  transition: background-color 0.2s, transform 0.2s;
+}
+
+.rbt-button:hover {
+  background-color: #192a56;
+  transform: translateY(-2px);
+}
+
+/* Back buttons */
+.back-home-button,
+.back-button {
+  background-color: #dcdde1;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  margin-bottom: 15px;
+  font-weight: bold;
+}
+
+.back-home-button:hover,
+.back-button:hover {
+  background-color: #718093;
+  color: white;
+}
+
+/* TokenID list */
+.token-id-list {
+  list-style: none;
+  padding: 0;
+  max-width: 600px;
+  margin: 20px auto;
+}
+
+.token-id-list li {
+  background-color: #ffffff;
+  border-radius: 10px;
+  padding: 10px 15px;
+  margin-bottom: 10px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  font-weight: bold;
+  text-align: center;
+  font-family: monospace;
+  cursor: pointer;
+  transition: background-color 0.2s, transform 0.2s;
+}
+
+.token-id-list li:hover {
+  background-color: #40739e;
+  color: white;
+  transform: translateY(-2px);
+}
+
+/* Highlight selected token */
+.token-id-list li.selected {
+  background-color: #192a56;
+  color: white;
+}
+
+/* Token details card */
+.token-details {
+  max-width: 700px;
+  margin: 20px auto;
+}
+
+.token-card {
+  background-color: #ffffff;
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+/* Error messages */
+.error {
+  color: red;
+  text-align: center;
+  margin-top: 20px;
+}
