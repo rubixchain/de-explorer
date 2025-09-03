@@ -1,21 +1,27 @@
 import React, { useEffect, useState } from "react";
-import { getTokens } from "./api";
+import { getTokens, getFTTokens } from "./api";
 import "./App.css";
 
 function App() {
   const [tokens, setTokens] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [view, setView] = useState("home"); // "home" | "list" | "details"
+  const [view, setView] = useState("home"); // "home" | "rbt-list" | "ft-list" | "details"
   const [selectedToken, setSelectedToken] = useState(null);
+  const [tokenType, setTokenType] = useState(null); // "rbt" | "ft"
 
   useEffect(() => {
-    if (view === "list" || view === "details") {
+    if (view === "rbt-list" || view === "ft-list" || view === "details") {
       let intervalId;
 
       async function fetchTokensData() {
         try {
-          const data = await getTokens();
+          let data = [];
+          if (tokenType === "rbt") {
+            data = await getTokens();
+          } else if (tokenType === "ft") {
+            data = await getFTTokens();
+          }
           setTokens(data || []);
         } catch (err) {
           setError(err.message);
@@ -29,7 +35,7 @@ function App() {
 
       return () => clearInterval(intervalId);
     }
-  }, [view]);
+  }, [view, tokenType]);
 
   const handleTokenClick = (token) => {
     setSelectedToken(token);
@@ -38,7 +44,11 @@ function App() {
 
   const handleBackToList = () => {
     setSelectedToken(null);
-    setView("list");
+    if (tokenType === "rbt") {
+      setView("rbt-list");
+    } else {
+      setView("ft-list");
+    }
   };
 
   const handleBackToHome = () => {
@@ -47,7 +57,13 @@ function App() {
   };
 
   const handleOpenRBTTokens = () => {
-    setView("list");
+    setTokenType("rbt");
+    setView("rbt-list");
+  };
+
+  const handleOpenFTTokens = () => {
+    setTokenType("ft");
+    setView("ft-list");
   };
 
   return (
@@ -63,11 +79,14 @@ function App() {
             <button className="rbt-button" onClick={handleOpenRBTTokens}>
               RBT Tokens
             </button>
+            <button className="ft-button" onClick={handleOpenFTTokens}>
+              FT Tokens
+            </button>
           </div>
         )}
 
         {/* Token list */}
-        {view === "list" && (
+        {(view === "rbt-list" || view === "ft-list") && (
           <>
             <button className="back-home-button" onClick={handleBackToHome}>
               &larr; Back to Home
@@ -78,7 +97,7 @@ function App() {
             {!loading && !error && tokens.length === 0 && <p>No tokens found.</p>}
             {!loading && !error && tokens.length > 0 && (
               <>
-                <h2>RBT Tokens</h2>
+                <h2>{tokenType === "rbt" ? "RBT Tokens" : "FT Tokens"}</h2>
                 <ul className="token-id-list">
                   {tokens.map((token, index) => (
                     <li
@@ -107,14 +126,26 @@ function App() {
             <h2>Token Details</h2>
             <div className="token-card">
               <h3>{selectedToken.tokenID}</h3>
-              <p><b>Parent TokenID:</b> {selectedToken.parentTokenID || "N/A"}</p>
-              <p><b>Value:</b> {selectedToken.value || "N/A"}</p>
-              <p><b>DID:</b> {selectedToken.DID || "N/A"}</p>
-              <p><b>Status:</b> {selectedToken.status}</p>
-              <p><b>State Hash:</b> {selectedToken.stateHash || "N/A"}</p>
-              <p><b>Transaction ID:</b> {selectedToken.transactionID || "N/A"}</p>
-              <p><b>Added:</b> {selectedToken.added ? "Yes" : "No"}</p>
-              <p><b>Sync Status:</b> {selectedToken.syncStatus}</p>
+              {tokenType === "rbt" && (
+                <>
+                  <p><b>Parent TokenID:</b> {selectedToken.parentTokenID || "N/A"}</p>
+                  <p><b>Value:</b> {selectedToken.value || "N/A"}</p>
+                  <p><b>DID:</b> {selectedToken.DID || "N/A"}</p>
+                  <p><b>Status:</b> {selectedToken.status}</p>
+                  <p><b>State Hash:</b> {selectedToken.stateHash || "N/A"}</p>
+                  <p><b>Transaction ID:</b> {selectedToken.transactionID || "N/A"}</p>
+                </>
+              )}
+              {tokenType === "ft" && (
+                <>
+                  <p><b>FT Name:</b> {selectedToken.ftName || "N/A"}</p>
+                  {/* <p><b>Symbol:</b> {selectedToken.symbol || "N/A"}</p> */}
+                  <p><b>Total Value:</b> {selectedToken.totalValue || "N/A"}</p>
+                  <p><b>Owner DID:</b> {selectedToken.ownerDID || "N/A"}</p>
+                  <p><b>Creator DID:</b> {selectedToken.creatorDID || "N/A"}</p>
+                  <p><b>Status:</b> {selectedToken.status || "N/A"}</p>
+                </>
+              )}
             </div>
           </div>
         )}

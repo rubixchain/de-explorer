@@ -41,3 +41,24 @@ func (c *RubixClient) GetFreeRBTs() (*model.GetFreeRBTResponse, error) {
 	}
 	return &data, nil
 }
+
+func (c *RubixClient) GetFTs() (*model.GetFTResponse, error) {
+	client := &http.Client{Timeout: c.Timeout}
+	url := fmt.Sprintf("%s/api/de-exp/get-ft", c.BaseURL)
+
+	resp, err := client.Get(url)
+	if err != nil {
+		return nil, fmt.Errorf("failed to call Rubix Node (FT): %w", err)
+	}
+	defer resp.Body.Close()
+
+	if resp.StatusCode != http.StatusOK {
+		return nil, fmt.Errorf("unexpected status from Rubix Node: %d", resp.StatusCode)
+	}
+
+	var data model.GetFTResponse
+	if err := json.NewDecoder(resp.Body).Decode(&data); err != nil {
+		return nil, fmt.Errorf("failed to decode FT response: %w", err)
+	}
+	return &data, nil
+}
