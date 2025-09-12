@@ -16,3 +16,7 @@ func NewFTService(c *client.RubixClient) *FTService {
 func (s *FTService) GetFTTokens() (*model.GetFTResponse, error) {
 	return s.client.GetFTs()
 }
+
+func (s *FTService) GetFTTokenchain(tokenID string) (map[string]interface{}, error) {
+	return s.client.GetFTTokenchain(tokenID)
+}

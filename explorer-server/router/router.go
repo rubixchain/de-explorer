@@ -24,6 +24,7 @@ func NewRouter() *mux.Router {
 	// Routes
 	r.HandleFunc("/api/get-free-rbt", handlers.GetRBTHandler(rbtService)).Methods(http.MethodGet)
 	r.HandleFunc("/api/get-ft", handlers.GetFTHandler(ftService)).Methods(http.MethodGet)
+	r.HandleFunc("/api/get-ft-token-chain", handlers.GetFTTokenchainHandler(ftService)).Methods(http.MethodGet)
 
 	return r
 }

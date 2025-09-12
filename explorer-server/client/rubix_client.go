@@ -62,3 +62,24 @@ func (c *RubixClient) GetFTs() (*model.GetFTResponse, error) {
 	}
 	return &data, nil
 }
+
+func (c *RubixClient) GetFTTokenchain(tokenID string) (map[string]interface{}, error) {
+	client := &http.Client{Timeout: c.Timeout}
+	url := fmt.Sprintf("%s/api/get-ft-token-chain?tokenID=%s", c.BaseURL, tokenID)
+
+	resp, err := client.Get(url)
+	if err != nil {
+		return nil, fmt.Errorf("failed to call Rubix Node (FT Tokenchain): %w", err)
+	}
+	defer resp.Body.Close()
+
+	if resp.StatusCode != http.StatusOK {
+		return nil, fmt.Errorf("unexpected status from Rubix Node: %d", resp.StatusCode)
+	}
+
+	var data map[string]interface{}
+	if err := json.NewDecoder(resp.Body).Decode(&data); err != nil {
+		return nil, fmt.Errorf("failed to decode FT tokenchain response: %w", err)
+	}
+	return data, nil
+}
