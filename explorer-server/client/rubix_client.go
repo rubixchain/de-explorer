@@ -23,7 +23,7 @@ func NewRubixClient(url string) *RubixClient {
 
 func (c *RubixClient) GetFreeRBTs() (*model.GetFreeRBTResponse, error) {
 	client := &http.Client{Timeout: c.Timeout}
-	url := fmt.Sprintf("%s/api/de-exp/get-rbt", c.BaseURL)
+	url := fmt.Sprintf("%s/api/de-exp/get-rbt-list", c.BaseURL)
 
 	resp, err := client.Get(url)
 	if err != nil {
@@ -44,7 +44,7 @@ func (c *RubixClient) GetFreeRBTs() (*model.GetFreeRBTResponse, error) {
 
 func (c *RubixClient) GetFTs() (*model.GetFTResponse, error) {
 	client := &http.Client{Timeout: c.Timeout}
-	url := fmt.Sprintf("%s/api/de-exp/get-ft", c.BaseURL)
+	url := fmt.Sprintf("%s/api/de-exp/get-ft-list", c.BaseURL)
 
 	resp, err := client.Get(url)
 	if err != nil {
@@ -65,7 +65,7 @@ func (c *RubixClient) GetFTs() (*model.GetFTResponse, error) {
 
 func (c *RubixClient) GetFTTokenchain(tokenID string) (map[string]interface{}, error) {
 	client := &http.Client{Timeout: c.Timeout}
-	url := fmt.Sprintf("%s/api/get-ft-token-chain?tokenID=%s", c.BaseURL, tokenID)
+	url := fmt.Sprintf("%s/api/de-exp/get-ft-token-chain?tokenID=%s", c.BaseURL, tokenID)
 
 	resp, err := client.Get(url)
 	if err != nil {
